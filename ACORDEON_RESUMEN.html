@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acordeón de Prolog - Resumen</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292e;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        code {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 85%;
+            padding: 0.2em 0.4em;
+        }
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            font-size: 85%;
+            line-height: 1.45;
+            overflow: auto;
+            padding: 16px;
+        }
+        pre code { background-color: transparent; padding: 0; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #dfe2e5; padding: 6px 13px; }
+        th { background-color: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background-color: #f6f8fa; }
+        
+        /* Botón de Impresión */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ea44f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .print-btn:hover { background-color: #2c974b; }
+        
+        @media print {
+            .print-btn { display: none; }
+            body { max-width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Guardar como PDF</button>
+
+    <h1>📖 Acordeón de Prolog: Resumen Todo-en-Uno</h1>
+    <p>Este documento es tu "hoja de trucos" (cheat sheet). Contiene las estructuras clave que necesitas para resolver ejercicios en Prolog.</p>
+
+    <h2>1. Tipos de Datos y Variables</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Ejemplos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Átomos</strong></td>
+                <td>Constantes de texto. Empiezan con <strong>minúscula</strong>.</td>
+                <td><code>juan</code>, <code>perro</code>, <code>'San Francisco'</code></td>
+            </tr>
+            <tr>
+                <td><strong>Números</strong></td>
+                <td>Enteros y decimales.</td>
+                <td><code>1</code>, <code>42</code>, <code>3.14</code></td>
+            </tr>
+            <tr>
+                <td><strong>Variables</strong></td>
+                <td>Huecos para valores. Empiezan con <strong>Mayúscula</strong> o <code>_</code>.</td>
+                <td><code>X</code>, <code>Resultado</code>, <code>_</code> (Anónima)</td>
+            </tr>
+            <tr>
+                <td><strong>Estructuras</strong></td>
+                <td>Datos compuestos.</td>
+                <td><code>fecha(12, 10, 2023)</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Hechos y Reglas (Sintaxis Básica)</h2>
+    
+    <h3>Hechos</h3>
+    <p>Verdades absolutas.</p>
+    <pre><code>es_gato(tom).
+padre(homero, bart).</code></pre>
+
+    <h3>Reglas</h3>
+    <p>Verdades condicionales ("Si... entonces").</p>
+    <ul>
+        <li><code>:-</code> se lee <strong>"SI"</strong>.</li>
+        <li><code>,</code> se lee <strong>"Y"</strong>.</li>
+        <li><code>;</code> se lee <strong>"O"</strong>.</li>
+    </ul>
+    <pre><code>abuelo(X, Y) :- 
+    padre(X, Z),  % X es padre de Z
+    padre(Z, Y).  % Y Z es padre de Y</code></pre>
+
+    <h2>3. Entrada y Salida (I/O)</h2>
+    <p>Interactuar con el usuario en la consola.</p>
+    <pre><code>prueba_io :-
+    writeln('Escribe algo terminado en punto:'), % Escribe y salta línea
+    read(X),                                     % Lee input (terminar con .)
+    write('Escribiste: '), write(X), nl,         % write no salta, nl sí
+    format('Formateado: El valor es ~w', [X]).   % ~w es el placeholder</code></pre>
+
+    <h2>4. Condicionales (If-Then-Else)</h2>
+    <p><strong>Estructura:</strong> <code>( Condicion -> Verdad ; Falso )</code></p>
+    <blockquote>⚠️ <strong>Importante:</strong> Los paréntesis <code>( )</code> son obligatorios.</blockquote>
+    <pre><code>verificar_edad(Edad) :-
+    ( Edad >= 18 ->
+        writeln('Mayor de edad')   % Bloque SI
+    ;                              % ELSE
+        writeln('Menor de edad')   % Bloque NO
+    ).</code></pre>
+
+    <h3>Anidado (Else-If)</h3>
+    <pre><code>nota(N) :-
+    ( N >= 9 -> writeln('A')
+    ; N >= 7 -> writeln('B')
+    ;           writeln('C')
+    ).</code></pre>
+
+    <h2>5. Estructura de Menú (Patrón Recursivo)</h2>
+    <p>Para mantener el programa corriendo, la regla se llama a sí misma.</p>
+    <pre><code>iniciar :- menu.
+
+menu :-
+    writeln('1. Opcion Uno'),
+    writeln('2. Opcion Dos'),
+    writeln('0. Salir'),
+    read(Opc),
+    opcion(Opc). % Llama al "switch"
+
+% Switch de opciones
+opcion(1) :- writeln('Elegiste 1'), menu. % Vuelve a llamar a menu
+opcion(2) :- writeln('Elegiste 2'), menu. % Vuelve a llamar a menu
+opcion(0) :- writeln('Adios').            % NO llama a menu -> Termina.
+opcion(_) :- writeln('Invalido'), menu.   % Catch-all para errores</code></pre>
+
+    <h2>6. Listas y Recursividad</h2>
+    <p>Una lista es <code>[Cabeza | Cola]</code>.</p>
+    <ul>
+        <li><strong>Cabeza (Head):</strong> El primer elemento.</li>
+        <li><strong>Cola (Tail):</strong> El resto de la lista (es otra lista).</li>
+    </ul>
+
+    <h3>Recorrer una lista</h3>
+    <pre><code>imprimir_lista([]). % Caso Base: Lista vacía -> Parar.
+imprimir_lista([H|T]) :-
+    writeln(H),        % Procesa Cabeza
+    imprimir_lista(T). % Llama con Cola</code></pre>
+
+    <h3>Buscar en una lista</h3>
+    <pre><code>buscar(X, [X|_]).      % Lo encontré en la cabeza.
+buscar(X, [_|T]) :-    % No es la cabeza, busco en la cola.
+    buscar(X, T).</code></pre>
+
+    <h2>7. Base de Datos Dinámica (Memoria)</h2>
+    <p>Para guardar y modificar datos mientras corre el programa.</p>
+    <pre><code>:- dynamic inventario/2. % Avisar que esto cambia
+
+% Agregar (Create)
+agregar(Item, Cantidad) :-
+    assertz(inventario(Item, Cantidad)).
+
+% Borrar (Delete)
+borrar(Item) :-
+    retract(inventario(Item, _)).
+
+% Modificar (Update) = Borrar viejo + Agregar nuevo
+actualizar(Item, NuevaCant) :-
+    retract(inventario(Item, _)),          % 1. Sacar
+    assertz(inventario(Item, NuevaCant)).  % 2. Meter nuevo</code></pre>
+
+    <h3>Consultar Todo</h3>
+    <pre><code>listar_todo :-
+    inventario(I, C),
+    format('Item: ~w, Cant: ~w~n', [I, C]),
+    fail.        % Falla a propósito para buscar el siguiente
+listar_todo.     % Cláusula final para terminar con true</code></pre>
+
+    <h2>8. Herramientas Útiles</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Predicado</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>length(Lista, N)</code></td>
+                <td><code>N</code> es el largo de la lista.</td>
+            </tr>
+            <tr>
+                <td><code>append(L1, L2, L3)</code></td>
+                <td>Une L1 y L2 en L3.</td>
+            </tr>
+            <tr>
+                <td><code>member(X, Lista)</code></td>
+                <td>Verifica si X está en Lista.</td>
+            </tr>
+            <tr>
+                <td><code>findall(X, regla(X), L)</code></td>
+                <td>Guarda todas las soluciones en una lista <code>L</code>.</td>
+            </tr>
+            <tr>
+                <td><code>atom_number(A, N)</code></td>
+                <td>Convierte átomo a número y viceversa.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
